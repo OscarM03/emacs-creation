@@ -1,26 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Arima:wght@100..700&family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+    --font-lora: Lora;
+    --color-primary: #f59e0b;
+    --color-secondary: #d97706;
+    --color-light-gray: #efefef;
+    --background-image-pattern: url("/images/background2.jpg");
+    --background-image-cameras: url("/images/bg-2.jpg");
+    --background-image-mobile: url("/images/bg-3.jpg");
+    --background-image-testimonials: url("/images/bg-7.jpg");
+}
+@layer base {
+    .loader {
+        width: 30px;
+        height: 30px;
+        border: 5px solid #fff;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    /* Remove scrollbar */
+    .remove-scrollbar::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+        border-radius: 0px;
+    }
+
+    .remove-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .remove-scrollbar::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 0px;
+    }
+
+    .remove-scrollbar::-webkit-scrollbar-thumb:hover {
+        /* background: #1e2238; */
+        background: transparent;
+    }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+    .container {
+        @apply mx-auto max-w-[1400px];
+    }
+    .section-w {
+        @apply w-[90%] sm:w-[85%] mx-auto;
+    }
+    .flex-center {
+        @apply flex justify-center items-center;
+    }
+    .btn {
+        @apply py-1 px-2 bg-primary rounded-md text-white font-bold;
+    }
 }
