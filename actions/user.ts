@@ -61,7 +61,7 @@ export const sendPasswordReset = async (email: string) => {
     const { account } = await createAdminClient(); // Appwrite account client
 
     try {
-        await account.createRecovery(email, `${process.env.NEXT_PUBLIC_API_URL}/reset-password`);
+        await account.createRecovery(email, `${process.env.NEXT_API_URL}/reset-password`);
 
         return {
             status: "success",
