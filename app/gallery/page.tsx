@@ -1,10 +1,11 @@
 "use client";
 
-import { getMedia } from "@/actions/auth";
+
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { MediaType } from "@/components/dashboard/MediaForm";
+import { getMedia } from "@/actions/media";
 
 const categories = [
     "All",
@@ -29,8 +30,8 @@ const Gallery: React.FC = () => {
         const fetchMedia = async () => {
             const response = await getMedia();
             if (response.status === "success") {
-                setMedia(response?.data ?? []);
-                setFilteredData(response?.data ?? []);
+                setMedia(response.media || []);
+                setFilteredData(response.media || []);
             }
         };
         fetchMedia();
@@ -109,7 +110,7 @@ const Gallery: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-6">
                     {filteredData.map((item) => (
                         <div
-                            key={item.id}
+                            key={item.$id}
                             className="w-full h-64 relative cursor-pointer"
                             onClick={() => setSelectedImage(item.url)}
                         >

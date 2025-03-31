@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
                 protocol: "https",
                 hostname: "bbqfckhsoxnxkckqfeof.supabase.co",
             },
+            {
+                protocol: "https",
+                hostname: "cloud.appwrite.io",
+            },
         ],
     },
     experimental: {

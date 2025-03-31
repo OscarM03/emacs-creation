@@ -1,6 +1,6 @@
 "use client";
 
-import { Emailhandler } from "@/actions/auth";
+import { Emailhandler } from "@/actions/email";
 import { contactDetails } from "@/constants";
 import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";

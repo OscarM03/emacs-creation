@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn } from "@/actions/auth";
+import { loginUser } from "@/actions/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -16,16 +16,14 @@ const Login: React.FC = () => {
     setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const credentials = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    };
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-    const res = await signIn(credentials);
+    const res = await loginUser(email, password);
     if (res.status === "success") {
       router.push("/dashboard");
     } else {
-      setError(res.status);
+      setError(res.message ?? "An unexpected error occurred");
     }
     setIsLoading(false);
   };

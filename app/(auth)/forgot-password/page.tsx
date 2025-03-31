@@ -1,7 +1,7 @@
 "use client";
 
+import { sendPasswordReset } from "@/actions/user";
 import React, { useState } from "react";
-import { sendPasswordResetEmail } from "@/actions/auth";
 
 const ForgotPassword: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -14,13 +14,11 @@ const ForgotPassword: React.FC = () => {
     setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const credentials = {
-      email: formData.get("email") as string,
-    };
+    const email = formData.get("email") as string;
 
-    const res = await sendPasswordResetEmail(credentials);
+    const res = await sendPasswordReset(email);
     if (res.status === "success") {
-      alert("Email sent successfully");
+      alert("Email sent successfully. Check your inbox.");
     } else {
       setError(res.status);
     }

@@ -2,15 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-    deleteMedia,
-    getMedia,
-    updateMedia,
-    uploadMedia,
-} from "@/actions/auth";
 import Image from "next/image";
 import MediaForm, { MediaType } from "@/components/dashboard/MediaForm";
 import Link from "next/link";
+import { createMedia, deleteMedia, getMedia, updateMedia} from "@/actions/media";
+import { imageUrl } from "@/lib/utils";
 
 const Page: React.FC = () => {
     const [showForm, setShowForm] = useState(false);
@@ -22,7 +18,7 @@ const Page: React.FC = () => {
         setIsLoading(true);
         const response = await getMedia();
         if (response.status === "success") {
-            setMedia(response?.data ?? []);
+            setMedia(response.media || []);
         }
         setIsLoading(false);
     };
@@ -39,9 +35,10 @@ const Page: React.FC = () => {
         setIsLoading(true);
 
         if (editingItem) {
-            await updateMedia(editingItem.id, category, type);
+            const id = editingItem.$id;
+            await updateMedia({id, category, type});
         } else if (file) {
-            await uploadMedia(file, category, type);
+            await createMedia({file, category, type});
         }
 
         await fetchMedia(); 
@@ -50,9 +47,9 @@ const Page: React.FC = () => {
         setIsLoading(false);
     };
 
-    const handleDelete = async (id: string, fileUrl: string) => {
+    const handleDelete = async (id: string, fileId: string) => {
         setIsLoading(true);
-        const response = await deleteMedia(id, fileUrl);
+        const response = await deleteMedia({id, fileId});
         if (response.status === "success") {
             await fetchMedia(); 
         }
@@ -95,11 +92,11 @@ const Page: React.FC = () => {
                     </thead>
                     <tbody>
                         {media.map((item) => (
-                            <tr key={item.id} className="border">
+                            <tr key={item.$id} className="border">
                                 <td className="border p-2">
                                     {item.type === "image" ? (
                                         <Image
-                                            src={item.url}
+                                            src={imageUrl(item.fileId)}
                                             width={200}
                                             height={200}
                                             alt={item.category}
@@ -117,9 +114,9 @@ const Page: React.FC = () => {
                                         </video>
                                     )}
                                 </td>
-                                <td className="border p-2">{item.type}</td>
-                                <td className="border p-2">{item.category}</td>
-                                <td className="p-2 flex flex-col items-center justify-center space-y-2">
+                                <td className="border p-2 text-center">{item.type}</td>
+                                <td className="border p-2 text-center">{item.category}</td>
+                                <td className="p-2 flex flex-col justify-center items-center space-y-4">
                                     <Button
                                         className="bg-primary text-white"
                                         onClick={() => {
@@ -132,7 +129,7 @@ const Page: React.FC = () => {
                                     <Button
                                         className="bg-primary text-white"
                                         onClick={() =>
-                                            handleDelete(item.id, item.url)
+                                            handleDelete(item.$id, item.fileId)
                                         }
                                     >
                                         Delete

@@ -163,22 +163,22 @@ export const contactDetails: ContactDetail[] = [
     {
         icon: <FaEnvelope size={32} />,
         title: "Contact us via email",
-        detail: "emacscreation@gmail.com",
+        detail: "emmazwagmuchui@gmail.com",
     },
     {
         icon: <FaPhone size={32} />,
         title: "Call us",
-        detail: "+123 456 7890",
+        detail: "+254720737327",
     },
     {
         icon: <FaWhatsapp size={32} />,
         title: "Chat on WhatsApp",
-        detail: "+123 456 7890",
+        detail: "+254720737327",
     },
     {
         icon: <FaMapMarkerAlt size={32} />,
         title: "Visit our office",
-        detail: "123 Main Street, City, Country",
+        detail: "Mugambo Complex, Room C13",
     },
 ];
 

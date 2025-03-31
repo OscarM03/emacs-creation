@@ -7,11 +7,16 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 
 export type MediaType = {
-    id: string;
+    $id: string; 
+    fileId: string;
     url: string;
     category: string;
     type: "image" | "video";
+    $createdAt: string;
+    $updatedAt: string;
 };
+
+
 
 type MediaFormProps = {
     mediaItem?: MediaType | null;
