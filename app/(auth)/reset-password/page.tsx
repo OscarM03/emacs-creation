@@ -1,22 +1,24 @@
 "use client";
 
 import { resetPassword } from "@/actions/user";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 const ResetPassword: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [userId, setUserId] = useState<string | null>(null);
-    const [secret, setSecret] = useState<string | null>(null);
 
     const router = useRouter();
-    const searchParams = useSearchParams();
 
-    useEffect(() => {
-        setUserId(searchParams.get("userId"));
-        setSecret(searchParams.get("secret"));
-    }, [searchParams]);
+    // Get search params synchronously
+    let userId: string | null = null;
+    let secret: string | null = null;
+
+    if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        userId = params.get("userId");
+        secret = params.get("secret");
+    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -29,6 +31,7 @@ const ResetPassword: React.FC = () => {
 
         if (!userId || !secret) {
             setError("Invalid or expired reset link.");
+            setIsLoading(false);
             return;
         }
 
