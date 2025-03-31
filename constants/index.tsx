@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { FaEnvelope, FaPhone, FaWhatsapp, FaMapMarkerAlt } from "react-icons/fa";
+import { FaEnvelope, FaPhone, FaWhatsapp, FaMapMarkerAlt, FaYoutube, FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
 
 type AboutUsData = {
     description: string;
@@ -178,7 +178,14 @@ export const contactDetails: ContactDetail[] = [
     {
         icon: <FaMapMarkerAlt size={32} />,
         title: "Visit our office",
-        detail: "Mugambo Complex, Room C13",
+        detail: "Migambo Complex, Room C13",
     },
 ];
+
+export const socialLinks  = [
+    {icon: <FaYoutube size={24}/>, href: "http://www.youtube.com/@emacscreations"},
+    {icon: <FaFacebook size={24}/>, href: "https://www.facebook.com/EmacsCreationKenya"},
+    {icon: <FaWhatsapp size={24}/>, href: "https://wa.me/254720737327"},
+    {icon: <FaTiktok size={24} />, href: "https://www.tiktok.com/@emacs_creation"},
+]
 
