@@ -54,7 +54,7 @@ const Gallery: React.FC = () => {
 
     return (
         <section className="container">
-            <div className="section-w h-full">
+            <div className="section-w h-screen">
                 <h1 className="py-2 text-gray-500 font-medium border-b">
                     <Link href="/" className="cursor-pointer">
                         Home
