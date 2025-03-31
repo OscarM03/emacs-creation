@@ -2,16 +2,21 @@
 
 import { resetPassword } from "@/actions/user";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const ResetPassword: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [userId, setUserId] = useState<string | null>(null);
+    const [secret, setSecret] = useState<string | null>(null);
+
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const userId = searchParams.get("userId");
-    const secret = searchParams.get("secret");
+    useEffect(() => {
+        setUserId(searchParams.get("userId"));
+        setSecret(searchParams.get("secret"));
+    }, [searchParams]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -58,12 +63,8 @@ const ResetPassword: React.FC = () => {
                     <fieldset className="flex flex-col gap-4 mt-4">
                         <legend className="sr-only">New Password Form</legend>
 
-                        {/* Password Field */}
                         <div className="flex flex-col gap-2">
-                            <label
-                                htmlFor="password"
-                                className="text-lg font-medium text-primary"
-                            >
+                            <label htmlFor="password" className="text-lg font-medium text-primary">
                                 New Password
                             </label>
                             <input
@@ -77,12 +78,8 @@ const ResetPassword: React.FC = () => {
                             />
                         </div>
 
-                        {/* Confirm Password Field */}
                         <div className="flex flex-col gap-2">
-                            <label
-                                htmlFor="confirmPassword"
-                                className="text-lg font-medium text-primary"
-                            >
+                            <label htmlFor="confirmPassword" className="text-lg font-medium text-primary">
                                 Confirm Password
                             </label>
                             <input
@@ -97,14 +94,12 @@ const ResetPassword: React.FC = () => {
                         </div>
                     </fieldset>
 
-                    {/* Error Message */}
                     {error && (
                         <div className="mt-1 text-center text-sm">
                             <p className="text-red-500">*{error}</p>
                         </div>
                     )}
 
-                    {/* Reset Password Button */}
                     <button
                         type="submit"
                         className="bg-primary w-full rounded-md py-3 hover:bg-secondary cursor-pointer mt-3 flex justify-center items-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
