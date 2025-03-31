@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { navLinks } from "@/constants";
+import { navLinks, socialLinks } from "@/constants";
 import Link from "next/link";
 import {
     Sheet,
@@ -8,10 +8,10 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { FaBars, FaFacebook, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 
 const MobileNav = () => {
-    const [open, setOpen] = useState(false); 
+    const [open, setOpen] = useState(false);
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
@@ -50,10 +50,19 @@ const MobileNav = () => {
                     ))}
                 </ul>
                 <div className="z-40 flex justify-center space-x-4 absolute bottom-[10%] w-full">
-                    <FaFacebook className="text-white cursor-pointer" size={24}/>
+                    {socialLinks.map((link, index) => (
+                        <Link
+                            key={index}
+                            href={link.href}
+                            className="text-white cursor-pointer"
+                        >
+                            {link.icon}
+                        </Link>
+                    ))}
+                    {/* <FaFacebook className="text-white cursor-pointer" size={24}/>
                     <FaYoutube className="text-white cursor-pointer" size={24}/>
                     <FaTiktok className="text-white cursor-pointer" size={24}/>
-                    <FaInstagram className="text-white cursor-pointer" size={24}/>
+                    <FaInstagram className="text-white cursor-pointer" size={24}/> */}
                 </div>
             </SheetContent>
         </Sheet>

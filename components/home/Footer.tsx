@@ -1,12 +1,8 @@
-import { navLinks } from "@/constants";
+import { navLinks, socialLinks } from "@/constants";
 import Link from "next/link";
 import React from "react";
 import {
     FaCopyright,
-    FaFacebook,
-    FaInstagram,
-    FaTiktok,
-    FaYoutube,
 } from "react-icons/fa";
 
 const Footer = () => {
@@ -20,22 +16,15 @@ const Footer = () => {
                                 Get in Touch
                             </h1>
                             <div className="z-40 flex justify-center space-x-4  w-full">
-                                <FaFacebook
-                                    className="text-white cursor-pointer"
-                                    size={20}
-                                />
-                                <FaYoutube
-                                    className="text-white cursor-pointer"
-                                    size={20}
-                                />
-                                <FaTiktok
-                                    className="text-white cursor-pointer"
-                                    size={20}
-                                />
-                                <FaInstagram
-                                    className="text-white cursor-pointer"
-                                    size={20}
-                                />
+                                {socialLinks.map((link, index) => (
+                                    <Link
+                                        key={index}
+                                        href={link.href}
+                                        className="text-white cursor-pointer"
+                                    >
+                                        {link.icon}
+                                    </Link>
+                                ))}
                             </div>
                         </div>
                         <div className="flex flex-col gap-4">
@@ -45,7 +34,7 @@ const Footer = () => {
                                         key={link.name}
                                         className="text-white font-medium hover:text-primary"
                                     >
-                                        <Link  href={link.href}>
+                                        <Link href={link.href}>
                                             {link.name}
                                         </Link>
                                     </li>
