@@ -96,7 +96,7 @@ const Page: React.FC = () => {
                                 <td className="border p-2">
                                     {item.type === "image" ? (
                                         <Image
-                                            src={imageUrl(item.fileId)}
+                                            src={item.url}
                                             width={200}
                                             height={200}
                                             alt={item.category}
