@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Photography & Videography Website
 
-## Getting Started
+## Overview
+This is a simple yet powerful photography and videography website designed to showcase and manage media content efficiently. The platform allows administrators to upload images and videos, categorize them, and present them in an elegant gallery for visitors.
 
-First, run the development server:
+## Features
+- **Admin Dashboard**: Secure access for admins to manage media content.
+- **Image & Video Upload**: Upload and categorize media with ease.
+- **User Authentication**: Secure login and password reset powered by Appwrite.
+- **Responsive Design**: Optimized for desktop and mobile devices.
+- **Fast & Scalable**: Built with Next.js for performance and scalability.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Tech Stack
+- **Frontend**: Next.js, Tailwind CSS
+- **Backend**: Appwrite (Authentication, Database, Storage)
+- **Storage**: Appwrite Storage (for images and videos)
+- **Deployment**: Vercel (Frontend), Appwrite Cloud/Self-hosted (Backend)
+
+## Installation & Setup
+### Prerequisites
+Ensure you have the following installed:
+- Node.js (LTS version recommended)
+- Appwrite (Cloud account or self-hosted instance)
+
+### Clone the Repository
+```sh
+git clone https://github.com/yourusername/photography-website.git
+cd photography-website
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install Dependencies
+```sh
+yarn install  # or npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Configure Environment Variables
+Create a `.env.local` file in the root directory and set up the following variables:
+```
+NEXT_PUBLIC_APPWRITE_ENDPOINT=<your-appwrite-endpoint>
+NEXT_PUBLIC_APPWRITE_PROJECT=<your-appwrite-project-id>
+NEXT_PUBLIC_APPWRITE_BUCKET=<your-storage-bucket-id>
+NEXT_PUBLIC_APPWRITE_DATABASE=<your-database-id>
+NEXT_PUBLIC_APPWRITE_COLLECTION=<your-collection-id>
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Run the Development Server
+```sh
+yarn dev  # or npm run dev
+```
+The application will be available at `http://localhost:3000`.
 
-## Learn More
+## Deployment
+### Vercel Deployment
+1. Push your code to GitHub/GitLab.
+2. Connect your repository to Vercel.
+3. Set up environment variables in Vercel.
+4. Deploy!
 
-To learn more about Next.js, take a look at the following resources:
+## Future Enhancements
+- **Tag-based search and filtering**
+- **Bulk media upload**
+- **Customizable gallery layouts**
+- **AI-powered media categorization**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
+Feel free to fork this project and submit pull requests! Ensure you follow best practices and document changes properly.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
+MIT License. See `LICENSE` for more details.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
