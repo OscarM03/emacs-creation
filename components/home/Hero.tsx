@@ -11,7 +11,7 @@ const textContainerVariants = {
         transition: {
             staggerChildren: 0.2, // Slows down each child's appearance
             ease: "easeInOut",
-            duration: 0.8, // Makes it smoother and slower
+            duration: 1, // Makes it smoother and slower
         },
     },
 };
