@@ -6,7 +6,6 @@ import Image from "next/image";
 import MediaForm, { MediaType } from "@/components/dashboard/MediaForm";
 import Link from "next/link";
 import { createMedia, deleteMedia, getMedia, updateMedia} from "@/actions/media";
-import { imageUrl } from "@/lib/utils";
 
 const Page: React.FC = () => {
     const [showForm, setShowForm] = useState(false);
