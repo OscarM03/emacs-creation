@@ -54,6 +54,10 @@ const MediaForm: React.FC<MediaFormProps> = ({ mediaItem, onSave, onClose, isLoa
                     <SelectContent className="bg-white">
                         <SelectItem value="photography" className=" hover:bg-gray-200 ">Photography</SelectItem>
                         <SelectItem value="videography" className=" hover:bg-gray-200 ">Videography</SelectItem>
+                        <SelectItem value="videography" className=" hover:bg-gray-200 ">Wedding</SelectItem>
+                        <SelectItem value="videography" className=" hover:bg-gray-200 ">Potrait</SelectItem>
+                        <SelectItem value="videography" className=" hover:bg-gray-200 ">Studio</SelectItem>
+                        <SelectItem value="videography" className=" hover:bg-gray-200 ">BTS</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
