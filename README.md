@@ -24,7 +24,7 @@ Ensure you have the following installed:
 
 ### Clone the Repository
 ```sh
-git clone https://github.com/yourusername/photography-website.git
+git clone https://github.com/OscarM03/emacs-creation.git
 cd photography-website
 ```
 

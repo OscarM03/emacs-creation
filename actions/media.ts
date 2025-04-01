@@ -99,11 +99,11 @@ export const getMedia = async () => {
             $updatedAt: doc.$updatedAt,
         }));
 
-        console.log("Formatted Media:", formattedMedia); // Debugging line
+        console.log("Formatted Media:", formattedMedia); 
         return {
             status: "success",
             message: "Media fetched successfully",
-            media: formattedMedia, // Now it matches MediaType
+            media: formattedMedia,
         };
     } catch (error) {
         console.log(error);
