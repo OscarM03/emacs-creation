@@ -24,7 +24,7 @@ export const Emailhandler = async (
 
         await transporter.sendMail({
             from:  `"Emacs Creation" - <${email}>`,
-            to: "emmazwagmuchui@gmail.com",
+            to: "emmazwamuchui@gmail.com",
             replyTo: email,
             subject: "New Contact Request",
             text: `You have a new contact request:\n\nName: ${name}\nEmail: ${email}\nPhone Number: +254${phoneNumber}\nService: ${service}\nMessage: ${message}`,
