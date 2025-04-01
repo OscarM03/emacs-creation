@@ -30,36 +30,46 @@ export const uploadMedia = async ({ file }: { file: File }) => {
 };
 
 export const createMedia = async ({
-    file,
+    files,
     type,
     category,
 }: {
-    file: File;
+    files: File[];
     type: string;
     category: string;
 }) => {
-    if (!file || !type || !category) {
+    if (!files.length || !type || !category) {
         return {
             status: "error",
-            message: "File, category, and type are required",
+            message: "At least one file, category, and type are required",
         };
     }
+
     const { databases } = await createAdminClient();
     try {
-        const media = await databases.createDocument(
-            appWriteConfig.databaseId,
-            appWriteConfig.collectionId,
-            ID.unique(),
-            {
-                type,
-                category,
-                fileId: await uploadMedia({ file }),
-            }
-        );
+        const uploadedMedia = [];
+
+        for (const file of files) {
+            const fileId = await uploadMedia({ file });
+
+            const media = await databases.createDocument(
+                appWriteConfig.databaseId,
+                appWriteConfig.collectionId,
+                ID.unique(),
+                {
+                    type,
+                    category,
+                    fileId,
+                }
+            );
+
+            uploadedMedia.push(media);
+        }
+
         return {
             status: "success",
-            message: "Media created successfully",
-            media: media,
+            message: `${uploadedMedia.length} media item(s) created successfully`,
+            media: uploadedMedia,
         };
     } catch (error) {
         console.log(error);
@@ -69,6 +79,7 @@ export const createMedia = async ({
         };
     }
 };
+
 
 export type MediaType = {
     $id: string; 

@@ -7,7 +7,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 
 export type MediaType = {
-    $id: string; 
+    $id: string;
     fileId: string;
     url: string;
     category: string;
@@ -16,19 +16,17 @@ export type MediaType = {
     $updatedAt: string;
 };
 
-
-
 type MediaFormProps = {
     mediaItem?: MediaType | null;
-    onSave: (file: File | null, category: string, type: "image" | "video") => void;
+    onSave: (files: File[], category: string, type: "image" | "video") => void;
     onClose: () => void;
-    isLoading: boolean; // New prop to handle loading state
+    isLoading: boolean;
 };
 
 const MediaForm: React.FC<MediaFormProps> = ({ mediaItem, onSave, onClose, isLoading }) => {
     const [category, setCategory] = useState(mediaItem?.category || "");
     const [type, setType] = useState<"image" | "video" | "">(mediaItem?.type || "");
-    const [file, setFile] = useState<File | null>(null);
+    const [files, setFiles] = useState<File[]>([]);
 
     return (
         <Card className="p-6 mt-4 shadow-lg lg:w-1/2 relative">
@@ -52,25 +50,30 @@ const MediaForm: React.FC<MediaFormProps> = ({ mediaItem, onSave, onClose, isLoa
                         <SelectValue placeholder="Choose a category" />
                     </SelectTrigger>
                     <SelectContent className="bg-white">
-                        <SelectItem value="photography" className=" hover:bg-gray-200 ">Photography</SelectItem>
-                        <SelectItem value="videography" className=" hover:bg-gray-200 ">Videography</SelectItem>
-                        <SelectItem value="Wedding" className=" hover:bg-gray-200 ">Wedding</SelectItem>
-                        <SelectItem value="Potrait" className=" hover:bg-gray-200 ">Potrait</SelectItem>
-                        <SelectItem value="Studio" className=" hover:bg-gray-200 ">Studio</SelectItem>
-                        <SelectItem value="BTS" className=" hover:bg-gray-200 ">BTS</SelectItem>
+                        <SelectItem value="photography">Photography</SelectItem>
+                        <SelectItem value="videography">Videography</SelectItem>
+                        <SelectItem value="Wedding">Wedding</SelectItem>
+                        <SelectItem value="Portrait">Portrait</SelectItem>
+                        <SelectItem value="Studio">Studio</SelectItem>
+                        <SelectItem value="BTS">BTS</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
             {!mediaItem && (
                 <div className="mb-4 flex flex-col gap-2">
-                    <Label>Upload File</Label>
-                    <Input type="file" onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)} disabled={isLoading} />
+                    <Label>Upload Files</Label>
+                    <Input 
+                        type="file" 
+                        multiple 
+                        onChange={(e) => setFiles(e.target.files ? Array.from(e.target.files) : [])} 
+                        disabled={isLoading} 
+                    />
                 </div>
             )}
             <button 
                 className="py-2 px-3 bg-primary rounded-md text-white font-bold hover:bg-secondary w-full flex justify-center items-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed" 
-                onClick={() => onSave(file, category, type as "image" | "video")} 
-                disabled={isLoading}
+                onClick={() => onSave(files, category, type as "image" | "video")} 
+                disabled={isLoading || files.length === 0}
             >
                Upload Media
                {isLoading && <span className="loader"></span>}

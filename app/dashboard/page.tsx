@@ -16,6 +16,7 @@ const Page: React.FC = () => {
     const fetchMedia = async () => {
         setIsLoading(true);
         const response = await getMedia();
+        console.log("Fetched Media:", response.media); // Log the fetched media
         if (response.status === "success") {
             setMedia(response.media || []);
         }
@@ -27,7 +28,7 @@ const Page: React.FC = () => {
     }, []);
 
     const handleSave = async (
-        file: File | null,
+        files: File[] | null,
         category: string,
         type: "image" | "video"
     ) => {
@@ -36,8 +37,8 @@ const Page: React.FC = () => {
         if (editingItem) {
             const id = editingItem.$id;
             await updateMedia({id, category, type});
-        } else if (file) {
-            await createMedia({file, category, type});
+        } else if (files) {
+            await createMedia({files, category, type});
         }
 
         await fetchMedia(); 
