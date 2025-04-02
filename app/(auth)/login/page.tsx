@@ -20,7 +20,11 @@ const Login: React.FC = () => {
         const password = (formData.get("password") || "") as string;
 
         try {
-            await account.createEmailPasswordSession(email, password);
+            if (account) {
+                await account.createEmailPasswordSession(email, password);
+            } else {
+                throw new Error("Account instance is not initialized.");
+            }
             router.push("/dashboard");
         } catch (err) {
             if (err instanceof Error) {
