@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -28,14 +28,16 @@ export type MediaType = {
 
 type MediaFormProps = {
     onClose: () => void;
+    onUploadSuccess: () => void;
 };
 
-const MediaForm: React.FC<MediaFormProps> = ({ onClose }) => {
+const MediaForm: React.FC<MediaFormProps> = ({ onClose, onUploadSuccess }) => {
     const [category, setCategory] = useState("");
     const [type, setType] = useState<"image" | "video" | "">("");
     const [files, setFiles] = useState<File[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
 
     const handleUpload = async () => {
@@ -46,11 +48,11 @@ const MediaForm: React.FC<MediaFormProps> = ({ onClose }) => {
     
         setIsLoading(true);
         setError(null);
+        setSuccessMessage(null);
     
         try {
             // ✅ Step 1: Verify if the user is authenticated
             const user = await account.get();
-            console.log("Authenticated user:", user);
     
             if (!user) {
                 setError("You must be logged in to upload files.");
@@ -83,8 +85,11 @@ const MediaForm: React.FC<MediaFormProps> = ({ onClose }) => {
                 uploadedMedia.push(media);
             }
     
-            alert(`${uploadedMedia.length} media item(s) uploaded successfully.`);
-            onClose(); // Close the modal after successful upload
+            setSuccessMessage(`${uploadedMedia.length} media item(s) uploaded successfully.`);
+            onUploadSuccess();
+            setTimeout(() => {
+                onClose();
+            }, 2000);
         } catch (err) {
             setError("Failed to upload media. Please try again.");
             console.error(err);
@@ -92,24 +97,6 @@ const MediaForm: React.FC<MediaFormProps> = ({ onClose }) => {
             setIsLoading(false);
         }
     };
-
-    useEffect(() => {
-        const initializeClient = async () => {
-          try {
-            const user = await account.get(); // Fetch user details
-            console.log("User logged in:", user);
-            // Use the databases instance for your app logic
-          } catch (error) {
-            console.error("Error initializing client:", error);
-            // Handle the case where the session is not available (e.g., redirect to login)
-          }
-        };
-      
-        initializeClient();
-      }, []);
-      
-    
-    
 
     return (
         <Card className="p-6 mt-4 shadow-lg lg:w-1/2 relative">
@@ -172,6 +159,7 @@ const MediaForm: React.FC<MediaFormProps> = ({ onClose }) => {
             </div>
 
             {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+            {successMessage && <p className="text-green-500 text-sm mb-2">{successMessage}</p>}
 
             <button
                 className="py-2 px-3 bg-primary rounded-md text-white font-bold hover:bg-secondary w-full flex justify-center items-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"

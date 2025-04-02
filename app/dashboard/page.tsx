@@ -60,6 +60,7 @@ const Page: React.FC = () => {
                 {showForm && (
                     <MediaForm
                         onClose={() => setShowForm(false)}
+                        onUploadSuccess={fetchMedia}
                     />
                 )}
                 <h2 className="text-xl font-semibold mt-6">Uploaded Content</h2>
