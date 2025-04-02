@@ -14,7 +14,7 @@ const categories = [
     "Photography",
     "Videography",
     "Studio",
-    "Travel",
+    "BTS",
 ];
 
 const Gallery: React.FC = () => {
@@ -41,7 +41,7 @@ const Gallery: React.FC = () => {
         let filtered = media;
         if (selectedCategory !== "All") {
             filtered = filtered.filter(
-                (item) => item.category === selectedCategory.toLowerCase()
+                (item) => item.category === selectedCategory
             );
         }
         if (mediaType !== "All") {
