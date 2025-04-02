@@ -19,7 +19,7 @@ const Gallery: React.FC = () => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [media, setMedia] = useState<MediaType[]>([]);
     const [filteredData, setFilteredData] = useState<MediaType[]>([]);
-    const [selectedCategory, setSelectedCategory] = useState<string>("All");
+    const [selectedCategory, setSelectedCategory] = useState<string>("Wedding");
     const [mediaType, setMediaType] = useState<
         "Images" | "Videos" | "All" | ""
     >("All");
@@ -37,7 +37,7 @@ const Gallery: React.FC = () => {
 
     useEffect(() => {
         let filtered = media;
-        if (selectedCategory !== "All") {
+        if (selectedCategory !== null) {
             filtered = filtered.filter(
                 (item) => item.category === selectedCategory
             );
