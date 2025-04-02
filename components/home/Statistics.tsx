@@ -3,7 +3,7 @@ import React from "react";
 const Statistics = () => {
     return (
         <section className="container">
-            <div className="section-w mt-16">
+            <div className="section-w my-16">
                 <h1 className="text-2xl font-bold text-center">Trusted by Many, Proven by Results</h1>
                 <div className="section-w mt-4 bg-gray-100 md:px-6 py-2 rounded-md">
                     <p className="text-center font-medium">

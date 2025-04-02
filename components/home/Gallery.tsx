@@ -21,35 +21,28 @@ const Gallery: React.FC = () => {
     const [media, setMedia] = useState<MediaType[]>([]);
     const [filteredData, setFilteredData] = useState<MediaType[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>("Wedding");
-    const [mediaType, setMediaType] = useState<
-        "Images" | "Videos" | "All" | ""
-    >("All");
+    const [mediaType, setMediaType] = useState<"Images" | "Videos" | "All">("All");
 
+    // Fetch media whenever selectedCategory changes
     useEffect(() => {
         const fetchMedia = async () => {
-            const response = await getMedia();
+            const response = await getMedia(25, 0, selectedCategory);
             if (response.status === "success") {
                 setMedia(response.media || []);
                 setFilteredData(response.media || []);
             }
         };
         fetchMedia();
-    }, []);
+    }, [selectedCategory]);
 
     useEffect(() => {
         let filtered = media;
-        if (selectedCategory !== null) {
-            filtered = filtered.filter(
-                (item) => item.category === selectedCategory
-            );
-        }
         if (mediaType !== "All") {
             const typeFilter = mediaType === "Images" ? "image" : "video";
             filtered = filtered.filter((item) => item.type === typeFilter);
         }
-
         setFilteredData(filtered);
-    }, [selectedCategory, mediaType, media]);
+    }, [mediaType, media]);
 
     return (
         <section className="container">
@@ -58,9 +51,9 @@ const Gallery: React.FC = () => {
 
                 {/* Categories */}
                 <div className="flex justify-center items-center gap-4 mt-4 flex-wrap">
-                    {categories.map((category, index) => (
+                    {categories.map((category) => (
                         <h1
-                            key={index}
+                            key={category}
                             className={`bg-gray-100 font-medium px-3 py-2 rounded-full ${
                                 selectedCategory === category
                                     ? "text-primary font-bold"
@@ -79,22 +72,14 @@ const Gallery: React.FC = () => {
                         <React.Fragment key={type}>
                             <h1
                                 className={`text-lg font-medium px-4 cursor-pointer ${
-                                    mediaType === type
-                                        ? "text-primary font-bold"
-                                        : "text-gray-500"
+                                    mediaType === type ? "text-primary font-bold" : "text-gray-500"
                                 }`}
-                                onClick={() =>
-                                    setMediaType(
-                                        type as "Images" | "Videos" | "All" | ""
-                                    )
-                                }
+                                onClick={() => setMediaType(type as "Images" | "Videos" | "All")}
                             >
                                 {type}
                             </h1>
                             {type !== "Videos" && (
-                                <span className="text-lg text-black font-bold">
-                                    |
-                                </span>
+                                <span className="text-lg text-black font-bold">|</span>
                             )}
                         </React.Fragment>
                     ))}
@@ -102,7 +87,7 @@ const Gallery: React.FC = () => {
 
                 {/* Gallery Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
-                    {filteredData.slice(0, 24).map((item) => (
+                    {filteredData.map((item) => (
                         <div
                             key={item.$id}
                             className="w-full relative cursor-pointer"
