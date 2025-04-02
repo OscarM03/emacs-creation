@@ -121,7 +121,7 @@ const Page: React.FC = () => {
                     <div className="flex justify-center mt-6">
                         <Button
                             onClick={() => fetchMedia()}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-secondary disabled:opacity-50"
                             disabled={isLoading}
                         >
                             {isLoading ? "Loading..." : "Load More"}
