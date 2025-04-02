@@ -116,7 +116,7 @@ const Gallery: React.FC = () => {
 
                 {/* Show Loading Spinner when Switching Categories */}
                 {loadingCategory && (
-                    <p className="text-center text-primary font-semibold mt-4">Loading category...</p>
+                    <p className="text-center text-primary font-semibold mt-4">Loading {selectedCategory} category...</p>
                 )}
 
                 {/* Gallery Grid */}

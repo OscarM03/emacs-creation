@@ -101,7 +101,7 @@ const Gallery: React.FC = () => {
                 {/* Loading Indicator */}
                 {loading && (
                     <p className="text-center text-primary font-semibold mt-4">
-                        Loading...
+                        Loading {selectedCategory} category...
                     </p>
                 )}
 

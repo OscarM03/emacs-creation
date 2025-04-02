@@ -9,9 +9,9 @@ const textContainerVariants = {
         opacity: 1,
         y: 0,
         transition: {
-            staggerChildren: 0.2, // Slows down each child's appearance
+            staggerChildren: 0.4, // Slows down each child's appearance
             ease: "easeInOut",
-            duration: 1, // Makes it smoother and slower
+            duration: 1.2, // Makes it smoother and slower
         },
     },
 };
