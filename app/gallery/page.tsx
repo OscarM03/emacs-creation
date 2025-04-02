@@ -30,7 +30,7 @@ const Gallery: React.FC = () => {
     const [loading, setLoading] = useState(false);
 
     // Fetch media based on pagination and category
-    const fetchMedia = async (reset = false) => {
+    const fetchMedia = React.useCallback(async (reset = false) => {
         if (loading) return;
         setLoading(true);
 
@@ -51,12 +51,13 @@ const Gallery: React.FC = () => {
             setHasMore(newMedia.length === limit); // If fewer than limit, no more items
         }
         setLoading(false);
-    };
+    }, [loading, offset, selectedCategory]);
 
     // Initial load
     useEffect(() => {
+        setOffset(0);
         fetchMedia(true);
-    }, [selectedCategory]);
+    }, [selectedCategory, fetchMedia]);
 
     // Filter media based on type
     useEffect(() => {
