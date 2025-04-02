@@ -15,6 +15,7 @@
     "@radix-ui/react-slot": "^1.1.2",
     "@shadcn/ui": "^0.0.4",
     "appwrite": "^17.0.1",
+    "browser-image-compression": "^2.0.2",
     "button": "^1.1.1",
     "canvas": "^3.1.0",
     "card": "^2.5.4",

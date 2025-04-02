@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { ID, } from "appwrite";
-import { appWriteConfig } from "@/lib/appwrite/config"; // Import your Appwrite config
+import { appWriteConfig } from "@/lib/appwrite/config";
 import { account, database, storage } from "@/lib/appwrite";
+import imageCompression from "browser-image-compression";
 
 
 export type MediaType = {
@@ -39,6 +40,34 @@ const MediaForm: React.FC<MediaFormProps> = ({ onClose, onUploadSuccess }) => {
     const [error, setError] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
+    const compressImage = async (file: File) => {
+        if (!file) return null;
+    
+        const options = {
+            maxSizeMB: 2,
+            maxWidthOrHeight: 2000,
+            useWebWorker: true,
+        };
+    
+        try {
+            const compressedBlob = await imageCompression(file, options);
+            
+            // Convert Blob back to File
+            const compressedFile = new File(
+                [compressedBlob], 
+                file.name, 
+                { type: file.type }
+            );
+    
+            return compressedFile;
+        } catch (error) {
+            console.error("Compression failed:", error);
+            return file; // Fallback to original file
+        }
+    };
+    
+    
+    
 
     const handleUpload = async () => {
         if (!files.length || !category || !type) {
@@ -51,9 +80,7 @@ const MediaForm: React.FC<MediaFormProps> = ({ onClose, onUploadSuccess }) => {
         setSuccessMessage(null);
     
         try {
-            // ✅ Step 1: Verify if the user is authenticated
             const user = await account.get();
-    
             if (!user) {
                 setError("You must be logged in to upload files.");
                 setIsLoading(false);
@@ -63,14 +90,18 @@ const MediaForm: React.FC<MediaFormProps> = ({ onClose, onUploadSuccess }) => {
             const uploadedMedia = [];
     
             for (const file of files) {
-                // ✅ Step 2: Upload file to Appwrite Storage
+                let finalFile = file;
+    
+                if (type === "image") {
+                    finalFile = (await compressImage(file)) || file; // Resize before upload
+                }
+    
                 const uploadedFile = await storage.createFile(
                     appWriteConfig.bucketId,
                     ID.unique(),
-                    file
+                    finalFile
                 );
     
-                // ✅ Step 3: Save file metadata in Appwrite Database
                 const media = await database.createDocument(
                     appWriteConfig.databaseId,
                     appWriteConfig.collectionId,
@@ -97,6 +128,7 @@ const MediaForm: React.FC<MediaFormProps> = ({ onClose, onUploadSuccess }) => {
             setIsLoading(false);
         }
     };
+    
 
     return (
         <Card className="p-6 mt-4 shadow-lg lg:w-1/2 relative">

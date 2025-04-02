@@ -163,8 +163,9 @@ const Gallery: React.FC = () => {
                         <Image
                             src={selectedImage}
                             alt="Expanded view"
-                            width={800}
-                            height={600}
+                            layout="intrinsic" // Keeps aspect ratio
+                            width={1600} // Larger than default
+                            height={1200}
                             className="rounded-md"
                         />
                     </div>
