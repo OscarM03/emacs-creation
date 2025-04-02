@@ -21,16 +21,21 @@ const Gallery: React.FC = () => {
     const [media, setMedia] = useState<MediaType[]>([]);
     const [filteredData, setFilteredData] = useState<MediaType[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>("Wedding");
-    const [mediaType, setMediaType] = useState<"Images" | "Videos" | "All">("All");
+    const [mediaType, setMediaType] = useState<"Images" | "Videos" | "All">(
+        "All"
+    );
 
-    // Fetch media whenever selectedCategory changes
+    const [loading, setLoading] = useState(false); // Add loading state
+
     useEffect(() => {
         const fetchMedia = async () => {
+            setLoading(true); // Start loading
             const response = await getMedia(25, 0, selectedCategory);
             if (response.status === "success") {
                 setMedia(response.media || []);
                 setFilteredData(response.media || []);
             }
+            setLoading(false); // Stop loading
         };
         fetchMedia();
     }, [selectedCategory]);
@@ -72,47 +77,68 @@ const Gallery: React.FC = () => {
                         <React.Fragment key={type}>
                             <h1
                                 className={`text-lg font-medium px-4 cursor-pointer ${
-                                    mediaType === type ? "text-primary font-bold" : "text-gray-500"
+                                    mediaType === type
+                                        ? "text-primary font-bold"
+                                        : "text-gray-500"
                                 }`}
-                                onClick={() => setMediaType(type as "Images" | "Videos" | "All")}
+                                onClick={() =>
+                                    setMediaType(
+                                        type as "Images" | "Videos" | "All"
+                                    )
+                                }
                             >
                                 {type}
                             </h1>
                             {type !== "Videos" && (
-                                <span className="text-lg text-black font-bold">|</span>
+                                <span className="text-lg text-black font-bold">
+                                    |
+                                </span>
                             )}
                         </React.Fragment>
                     ))}
                 </div>
 
+                {/* Loading Indicator */}
+                {loading && (
+                    <p className="text-center text-primary font-semibold mt-4">
+                        Loading...
+                    </p>
+                )}
+
                 {/* Gallery Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
-                    {filteredData.map((item) => (
-                        <div
-                            key={item.$id}
-                            className="w-full relative cursor-pointer"
-                            onClick={() => setSelectedImage(item.url)}
-                        >
-                            {item.type === "image" ? (
-                                <Image
-                                    src={item.url}
-                                    alt={item.category}
-                                    width={800}
-                                    height={600}
-                                    style={{ objectFit: "cover" }}
-                                    className="rounded-md hover:opacity-80 transition-opacity duration-300"
-                                />
-                            ) : (
-                                <video
-                                    className="w-full h-full rounded-md hover:opacity-80 transition-opacity duration-300"
-                                    controls
-                                >
-                                    <source src={item.url} type="video/mp4" />
-                                </video>
-                            )}
-                        </div>
-                    ))}
-                </div>
+                {!loading && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+                        {filteredData.map((item) => (
+                            <div
+                                key={item.$id}
+                                className="w-full relative cursor-pointer"
+                                onClick={() => setSelectedImage(item.url)}
+                            >
+                                {item.type === "image" ? (
+                                    <Image
+                                        src={item.url}
+                                        alt={item.category}
+                                        width={800}
+                                        height={600}
+                                        style={{ objectFit: "cover" }}
+                                        className="rounded-md hover:opacity-80 transition-opacity duration-300"
+                                    />
+                                ) : (
+                                    <video
+                                        className="w-full h-full rounded-md hover:opacity-80 transition-opacity duration-300"
+                                        controls
+                                    >
+                                        <source
+                                            src={item.url}
+                                            type="video/mp4"
+                                        />
+                                    </video>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
                 <Link href="/gallery">
                     <button className="mt-2 flex justify-end items-center gap-2 text-primary font-medium w-full cursor-pointer hover:text-secondary">
                         View More
