@@ -12,6 +12,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     useEffect(() => {
         const checkAuth = async () => {
             try {
+                if (!account) {
+                    throw new Error("Account is undefined");
+                }
                 const user = await account.get(); // Get the authenticated user from Appwrite
                 console.log(user); // Log the user object (optional)
                 setLoading(false); // Set loading to false after checking user
