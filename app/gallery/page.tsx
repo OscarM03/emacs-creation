@@ -1,6 +1,5 @@
 "use client";
 
-
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -111,14 +110,15 @@ const Gallery: React.FC = () => {
                     {filteredData.map((item) => (
                         <div
                             key={item.$id}
-                            className="w-full h-64 relative cursor-pointer"
+                            className="w-full relative cursor-pointer"
                             onClick={() => setSelectedImage(item.url)}
                         >
                             {item.type === "image" ? (
                                 <Image
                                     src={item.url}
                                     alt={item.category}
-                                    fill
+                                    width={800}
+                                    height={600}
                                     style={{ objectFit: "cover" }}
                                     className="rounded-md hover:opacity-80 transition-opacity duration-300"
                                 />

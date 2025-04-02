@@ -22,9 +22,9 @@ const Gallery: React.FC = () => {
     const [media, setMedia] = useState<MediaType[]>([]);
     const [filteredData, setFilteredData] = useState<MediaType[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
-    const [mediaType, setMediaType] = useState<"Images" | "Videos" | "All" | "">(
-        "All"
-    );
+    const [mediaType, setMediaType] = useState<
+        "Images" | "Videos" | "All" | ""
+    >("All");
 
     useEffect(() => {
         const fetchMedia = async () => {
@@ -62,7 +62,11 @@ const Gallery: React.FC = () => {
                     {categories.map((category, index) => (
                         <h1
                             key={index}
-                            className={`bg-gray-100 font-medium px-3 py-2 rounded-full ${selectedCategory === category ? "text-primary font-bold" : "text-black"} cursor-pointer hover:bg-gray-200 transition`}
+                            className={`bg-gray-100 font-medium px-3 py-2 rounded-full ${
+                                selectedCategory === category
+                                    ? "text-primary font-bold"
+                                    : "text-black"
+                            } cursor-pointer hover:bg-gray-200 transition`}
                             onClick={() => setSelectedCategory(category)}
                         >
                             {category}
@@ -75,12 +79,24 @@ const Gallery: React.FC = () => {
                     {["All", "Images", "Videos"].map((type) => (
                         <React.Fragment key={type}>
                             <h1
-                                className={`text-lg font-medium px-4 cursor-pointer ${mediaType === type ? "text-primary font-bold" : "text-gray-500"}`}
-                                onClick={() => setMediaType(type as "Images" | "Videos" | "All" | "")}
+                                className={`text-lg font-medium px-4 cursor-pointer ${
+                                    mediaType === type
+                                        ? "text-primary font-bold"
+                                        : "text-gray-500"
+                                }`}
+                                onClick={() =>
+                                    setMediaType(
+                                        type as "Images" | "Videos" | "All" | ""
+                                    )
+                                }
                             >
                                 {type}
                             </h1>
-                            {type !== "Videos" && <span className="text-lg text-black font-bold">|</span>}
+                            {type !== "Videos" && (
+                                <span className="text-lg text-black font-bold">
+                                    |
+                                </span>
+                            )}
                         </React.Fragment>
                     ))}
                 </div>
@@ -90,19 +106,23 @@ const Gallery: React.FC = () => {
                     {filteredData.slice(0, 24).map((item) => (
                         <div
                             key={item.$id}
-                            className="w-full h-64 relative cursor-pointer"
+                            className="w-full relative cursor-pointer"
                             onClick={() => setSelectedImage(item.url)}
                         >
                             {item.type === "image" ? (
                                 <Image
-                                src={item.url}
-                                alt={item.category}
-                                fill
-                                style={{ objectFit: "cover" }}
-                                className="rounded-md hover:opacity-80 transition-opacity duration-300"
-                            />
+                                    src={item.url}
+                                    alt={item.category}
+                                    width={800}
+                                    height={600}
+                                    style={{ objectFit: "cover" }}
+                                    className="rounded-md hover:opacity-80 transition-opacity duration-300"
+                                />
                             ) : (
-                                <video className="w-full h-full rounded-md hover:opacity-80 transition-opacity duration-300" controls>
+                                <video
+                                    className="w-full h-full rounded-md hover:opacity-80 transition-opacity duration-300"
+                                    controls
+                                >
                                     <source src={item.url} type="video/mp4" />
                                 </video>
                             )}
@@ -110,10 +130,10 @@ const Gallery: React.FC = () => {
                     ))}
                 </div>
                 <Link href="/gallery">
-                <button className="mt-2 flex justify-end items-center gap-2 text-primary font-medium w-full cursor-pointer hover:text-secondary">
-                    View More
-                    <FaLongArrowAltRight className="" />
-                </button>
+                    <button className="mt-2 flex justify-end items-center gap-2 text-primary font-medium w-full cursor-pointer hover:text-secondary">
+                        View More
+                        <FaLongArrowAltRight className="" />
+                    </button>
                 </Link>
             </div>
 
