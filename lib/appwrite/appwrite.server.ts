@@ -41,6 +41,7 @@ export const createAdminClient = async () => {
   
     // Return an object with properties for accessing various Appwrite services
     return {
+      client,
       // Getter for account-related operations
       get account() {
         return new Account(client); // Initialize and return an Account instance tied to the client

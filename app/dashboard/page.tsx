@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import MediaForm, { MediaType } from "@/components/dashboard/MediaForm";
 import Link from "next/link";
-import { createMedia, deleteMedia, getMedia, updateMedia} from "@/actions/media";
+import {
+    deleteMedia,
+    getMedia,
+} from "@/actions/media";
 
 const Page: React.FC = () => {
     const [showForm, setShowForm] = useState(false);
     const [media, setMedia] = useState<MediaType[]>([]);
-    const [editingItem, setEditingItem] = useState<MediaType | null>(null);
     const [isLoading, setIsLoading] = useState(false); // Track loading state
 
     const fetchMedia = async () => {
@@ -24,34 +26,16 @@ const Page: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchMedia(); // Load media on mount
+        fetchMedia();
     }, []);
 
-    const handleSave = async (
-        files: File[] | null,
-        category: string,
-        type: "image" | "video"
-    ) => {
-        setIsLoading(true);
 
-        if (editingItem) {
-            const id = editingItem.$id;
-            await updateMedia({id, category, type});
-        } else if (files) {
-            await createMedia({files, category, type});
-        }
-
-        await fetchMedia(); 
-        setShowForm(false);
-        setEditingItem(null);
-        setIsLoading(false);
-    };
 
     const handleDelete = async (id: string, fileId: string) => {
         setIsLoading(true);
-        const response = await deleteMedia({id, fileId});
+        const response = await deleteMedia({ id, fileId });
         if (response.status === "success") {
-            await fetchMedia(); 
+            await fetchMedia();
         }
         setIsLoading(false);
     };
@@ -60,27 +44,28 @@ const Page: React.FC = () => {
         <section className="container">
             <div className="section-w">
                 <h1 className="py-2 text-gray-500 font-medium border-b">
-                    <Link href="/" className="cursor-pointer">Home</Link>/dashboard
+                    <Link href="/" className="cursor-pointer">
+                        Home
+                    </Link>
+                    /dashboard
                 </h1>
                 <Button
                     className="bg-primary text-white p-6 rounded-md mt-4"
                     onClick={() => {
                         setShowForm(true);
-                        setEditingItem(null);
                     }}
                 >
                     Add Content +
                 </Button>
                 {showForm && (
                     <MediaForm
-                        mediaItem={editingItem}
-                        onSave={handleSave}
                         onClose={() => setShowForm(false)}
-                        isLoading={isLoading}
                     />
                 )}
                 <h2 className="text-xl font-semibold mt-6">Uploaded Content</h2>
-                {isLoading && <p className="text-center text-gray-500">Loading...</p>}
+                {isLoading && (
+                    <p className="text-center text-gray-500">Loading...</p>
+                )}
                 <table className="w-full border-collapse border border-gray-300 mt-4">
                     <thead>
                         <tr className="bg-gray-200">
@@ -114,18 +99,21 @@ const Page: React.FC = () => {
                                         </video>
                                     )}
                                 </td>
-                                <td className="border p-2 text-center">{item.type}</td>
-                                <td className="border p-2 text-center">{item.category}</td>
+                                <td className="border p-2 text-center">
+                                    {item.type}
+                                </td>
+                                <td className="border p-2 text-center">
+                                    {item.category}
+                                </td>
                                 <td className="p-2 flex flex-col justify-center items-center space-y-4">
-                                    <Button
+                                    {/* <Button
                                         className="bg-primary text-white"
                                         onClick={() => {
-                                            setEditingItem(item);
                                             setShowForm(true);
                                         }}
                                     >
                                         Edit
-                                    </Button>
+                                    </Button> */}
                                     <Button
                                         className="bg-primary text-white"
                                         onClick={() =>

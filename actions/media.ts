@@ -1,6 +1,7 @@
 "use server"
 
-import { createAdminClient } from "@/lib/appwrite";
+
+import { createAdminClient } from "@/lib/appwrite/appwrite.server";
 import { appWriteConfig } from "@/lib/appwrite/config";
 import { imageUrl } from "@/lib/utils";
 import { ID, Query } from "node-appwrite";
@@ -29,56 +30,114 @@ export const uploadMedia = async ({ file }: { file: File }) => {
     }
 };
 
-export const createMedia = async ({
-    files,
-    type,
-    category,
-}: {
-    files: File[];
-    type: string;
-    category: string;
-}) => {
-    if (!files.length || !type || !category) {
-        return {
-            status: "error",
-            message: "At least one file, category, and type are required",
-        };
-    }
+// export const createMedia = async ({
+//     files,
+//     type,
+//     category,
+// }: {
+//     files: File[];
+//     type: string;
+//     category: string;
+// }) => {
+//     if (!files.length || !type || !category) {
+//         return {
+//             status: "error",
+//             message: "At least one file, category, and type are required",
+//         };
+//     }
 
-    const { databases } = await createAdminClient();
-    try {
-        const uploadedMedia = [];
+//     const { databases } = await createAdminClient();
 
-        for (const file of files) {
-            const fileId = await uploadMedia({ file });
+//     try {
+//         const uploadedMedia = [];
 
-            const media = await databases.createDocument(
-                appWriteConfig.databaseId,
-                appWriteConfig.collectionId,
-                ID.unique(),
-                {
-                    type,
-                    category,
-                    fileId,
-                }
-            );
+//         for (const file of files) {
+//             // Resize the image before uploading it
+//             const resizedFile = await resizeImage(file, 800, 600);  // Resize to fit within 800x600 pixels
 
-            uploadedMedia.push(media);
-        }
+//             const resizedFileAsFile = new File([new Blob([resizedFile])], file.name, { type: file.type });
+//             const fileId = await uploadMedia({ file: resizedFileAsFile });
 
-        return {
-            status: "success",
-            message: `${uploadedMedia.length} media item(s) created successfully`,
-            media: uploadedMedia,
-        };
-    } catch (error) {
-        console.log(error);
-        return {
-            status: "error",
-            message: "Failed to create media",
-        };
-    }
-};
+//             const media = await databases.createDocument(
+//                 appWriteConfig.databaseId,
+//                 appWriteConfig.collectionId,
+//                 ID.unique(),
+//                 {
+//                     type,
+//                     category,
+//                     fileId,
+//                 }
+//             );
+
+//             uploadedMedia.push(media);
+//         }
+
+//         return {
+//             status: "success",
+//             message: `${uploadedMedia.length} media item(s) created successfully`,
+//             media: uploadedMedia,
+//         };
+//     } catch (error) {
+//         console.log(error);
+//         return {
+//             status: "error",
+//             message: "Failed to create media",
+//         };
+//     }
+// };
+
+
+// function resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<Buffer> {
+//     return new Promise((resolve, reject) => {
+//         const reader = new FileReader();
+
+//         reader.onload = function (event) {
+//             if (event.target && event.target.result) {
+//                 loadImage(event.target.result as string)
+//                 .then((img) => {
+//                     const canvas = createCanvas(maxWidth, maxHeight);
+//                     const ctx = canvas.getContext('2d');
+
+//                     let width = img.width;
+//                     let height = img.height;
+
+//                     // Calculate new dimensions to maintain aspect ratio
+//                     if (width > height) {
+//                         if (width > maxWidth) {
+//                             height = (height * maxWidth) / width;
+//                             width = maxWidth;
+//                         }
+//                     } else {
+//                         if (height > maxHeight) {
+//                             width = (width * maxHeight) / height;
+//                             height = maxHeight;
+//                         }
+//                     }
+
+//                     // Set canvas size to the new dimensions
+//                     canvas.width = width;
+//                     canvas.height = height;
+
+//                     // Draw the resized image on the canvas
+//                     ctx.drawImage(img, 0, 0, width, height);
+
+//                     // Convert canvas to Buffer and resolve with the resized image
+//                     canvas.toBuffer((err, buffer) => {
+//                         if (err) {
+//                             reject(err);
+//                         } else {
+//                             resolve(buffer);
+//                         }
+//                     });
+//                 })
+//                 .catch(reject);
+//         };
+
+//         reader.onerror = reject;
+//         reader.readAsDataURL(file);
+//     }});
+// }
+
 
 
 export type MediaType = {
