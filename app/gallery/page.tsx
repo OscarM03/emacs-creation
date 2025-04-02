@@ -7,7 +7,6 @@ import { MediaType } from "@/components/dashboard/MediaForm";
 import { getMedia } from "@/actions/media";
 
 const categories = [
-    "All",
     "Wedding",
     "Portrait",
     "Photography",

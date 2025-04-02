@@ -8,7 +8,6 @@ import Link from "next/link";
 import { getMedia } from "@/actions/media";
 
 const categories = [
-    "All",
     "Wedding",
     "Portrait",
     "Photography",
