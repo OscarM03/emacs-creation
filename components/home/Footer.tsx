@@ -28,7 +28,7 @@ const Footer = () => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-4">
-                            <div className="flex gap-4 list-none ">
+                            <ul className="flex gap-4 list-none">
                                 {navLinks.map((link) => (
                                     <li
                                         key={link.name}
@@ -39,7 +39,7 @@ const Footer = () => {
                                         </Link>
                                     </li>
                                 ))}
-                            </div>
+                            </ul>
                             <div className="flex justify-center md:justify-end gap-4">
                                 <h1 className="text-white font-medium cursor-pointer hover:text-primary transition">
                                     Privacy Policy
