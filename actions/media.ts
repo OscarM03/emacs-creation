@@ -150,14 +150,27 @@ export type MediaType = {
     $updatedAt: string;
 };
 
-export const getMedia = async () => {
+export const getMedia = async (limit: number = 25, offset: number = 0, category?: string) => {
     const { databases } = await createAdminClient();
     try {
+        const queries = [
+            Query.orderDesc("$createdAt"),
+            Query.limit(limit),
+            Query.offset(offset),
+        ];
+
+        if (category) {
+            queries.push(Query.equal("category", category)); // Filter by category
+        }
+
         const media = await databases.listDocuments(
             appWriteConfig.databaseId,
             appWriteConfig.collectionId,
-            [Query.orderDesc("$createdAt")]
+            queries
         );
+
+        console.log("Total documents in category:", media.total);
+        console.log("Fetched:", media.documents.length);
 
         const formattedMedia: MediaType[] = media.documents.map((doc: any) => ({
             $id: doc.$id,
@@ -169,20 +182,25 @@ export const getMedia = async () => {
             $updatedAt: doc.$updatedAt,
         }));
 
-        console.log("Formatted Media:", formattedMedia); 
         return {
             status: "success",
             message: "Media fetched successfully",
             media: formattedMedia,
+            total: media.total,
         };
     } catch (error) {
-        console.log(error);
+        console.error("Fetch media error:", error);
         return {
             status: "error",
             message: "Failed to fetch media",
+            media: [],
+            total: 0,
         };
     }
 };
+
+
+
 
 
 export const updateMedia = async ({

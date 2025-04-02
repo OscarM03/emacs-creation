@@ -15,44 +15,62 @@ const categories = [
     "BTS",
 ];
 
+const limit = 25; // Number of items per page
+
 const Gallery: React.FC = () => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [media, setMedia] = useState<MediaType[]>([]);
     const [filteredData, setFilteredData] = useState<MediaType[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>("Wedding");
-    const [mediaType, setMediaType] = useState<
-        "Images" | "Videos" | "All" | ""
-    >("All");
+    const [mediaType, setMediaType] = useState<"Images" | "Videos" | "All">(
+        "All"
+    );
+    const [offset, setOffset] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const fetchMedia = async () => {
-            const response = await getMedia();
-            if (response.status === "success") {
-                setMedia(response.media || []);
-                setFilteredData(response.media || []);
+    // Fetch media based on pagination and category
+    const fetchMedia = async (reset = false) => {
+        if (loading) return;
+        setLoading(true);
+
+        const response = await getMedia(limit, reset ? 0 : offset, selectedCategory);
+        if (response.status === "success") {
+            const newMedia = response.media || [];
+
+            if (reset) {
+                setMedia(newMedia);
+                setFilteredData(newMedia);
+                setOffset(limit);
+            } else {
+                setMedia((prev) => [...prev, ...newMedia]);
+                setFilteredData((prev) => [...prev, ...newMedia]);
+                setOffset((prev) => prev + limit);
             }
-        };
-        fetchMedia();
-    }, []);
 
+            setHasMore(newMedia.length === limit); // If fewer than limit, no more items
+        }
+        setLoading(false);
+    };
+
+    // Initial load
+    useEffect(() => {
+        fetchMedia(true);
+    }, [selectedCategory]);
+
+    // Filter media based on type
     useEffect(() => {
         let filtered = media;
-        if (selectedCategory !== null) {
-            filtered = filtered.filter(
-                (item) => item.category === selectedCategory
-            );
-        }
         if (mediaType !== "All") {
             const typeFilter = mediaType === "Images" ? "image" : "video";
             filtered = filtered.filter((item) => item.type === typeFilter);
         }
-
         setFilteredData(filtered);
-    }, [selectedCategory, mediaType, media]);
+    }, [mediaType, media]);
 
     return (
         <section className="container">
-            <div className="section-w h-screen">
+            <div className="section-w">
                 <h1 className="py-2 text-gray-500 font-medium border-b">
                     <Link href="/" className="cursor-pointer">
                         Home
@@ -70,7 +88,10 @@ const Gallery: React.FC = () => {
                                     ? "text-primary font-bold"
                                     : "text-black"
                             } cursor-pointer hover:bg-gray-200 transition`}
-                            onClick={() => setSelectedCategory(category)}
+                            onClick={() => {
+                                setSelectedCategory(category);
+                                fetchMedia(true); // Reset media when changing category
+                            }}
                         >
                             {category}
                         </h1>
@@ -89,7 +110,7 @@ const Gallery: React.FC = () => {
                                 }`}
                                 onClick={() =>
                                     setMediaType(
-                                        type as "Images" | "Videos" | "All" | ""
+                                        type as "Images" | "Videos" | "All"
                                     )
                                 }
                             >
@@ -132,6 +153,19 @@ const Gallery: React.FC = () => {
                         </div>
                     ))}
                 </div>
+
+                {/* Load More Button */}
+                {hasMore && (
+                    <div className="flex justify-end my-6">
+                        <button
+                            onClick={() => fetchMedia()}
+                            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-secondary disabled:opacity-50"
+                            disabled={loading}
+                        >
+                            {loading ? "Loading..." : "Load More"}
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Modal for Enlarged Image */}
