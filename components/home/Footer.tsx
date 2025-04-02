@@ -9,7 +9,7 @@ const Footer = () => {
     return (
         <section className="bg-black">
             <div className="container">
-                <div className="section-w mt-16 py-6 flex flex-col max-md:gap-6">
+                <div className="section-w py-6 flex flex-col max-md:gap-6">
                     <div className="flex justify-between items-center md:flex-row flex-col max-md:gap-8">
                         <div className="flex flex-col gap-4">
                             <h1 className="text-2xl font-bold text-white">
