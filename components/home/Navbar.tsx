@@ -6,7 +6,7 @@ import MobileNav from "./MobileNav";
 
 const Navbar = () => {
     return (
-        <section className="container">
+        <section className="container" id="navbar">
             <div className="section-w flex items-center justify-between py-4">
                 <div>
                     <h1 className="text-lg sm:text-xl text-primary font-bold ">
