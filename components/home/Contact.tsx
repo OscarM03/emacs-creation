@@ -2,7 +2,6 @@
 
 import { Emailhandler } from "@/actions/email";
 import { contactDetails } from "@/constants";
-import Link from "next/link";
 import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
