@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { FaEnvelope, FaPhone, FaWhatsapp, FaMapMarkerAlt, FaYoutube, FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
+import { FaEnvelope, FaPhone, FaWhatsapp, FaMapMarkerAlt, FaYoutube, FaFacebook, FaTiktok } from "react-icons/fa";
 
 type AboutUsData = {
     description: string;
@@ -21,6 +21,7 @@ export interface ContactDetail {
     icon: JSX.Element;
     title: string;
     detail: string;
+    href: string;
 }
 
 
@@ -164,21 +165,25 @@ export const contactDetails: ContactDetail[] = [
         icon: <FaEnvelope size={32} />,
         title: "Contact us via email",
         detail: "emmazwagmuchui@gmail.com",
+        href: "mailto:emmazwamuchui@gmail.com?subject=Inquiry&body=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20your%20services.",
     },
     {
         icon: <FaPhone size={32} />,
         title: "Call us",
         detail: "+254720737327",
+        href: "tel:+254720737327",
     },
     {
         icon: <FaWhatsapp size={32} />,
         title: "Chat on WhatsApp",
         detail: "+254720737327",
+        href: "https://wa.me/254720737327?text=Hello%2C%20I%20am%20interested%20in%20your%20services",
     },
     {
         icon: <FaMapMarkerAlt size={32} />,
         title: "Visit our office",
         detail: "Migambo Complex, Room C13",
+        href: "https://maps.app.goo.gl/uXsnab4mprdeR8kp7",
     },
 ];
 

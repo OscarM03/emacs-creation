@@ -2,6 +2,7 @@
 
 import { Emailhandler } from "@/actions/email";
 import { contactDetails } from "@/constants";
+import Link from "next/link";
 import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
@@ -28,12 +29,19 @@ const Contact = () => {
         "Other",
     ];
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         const { name, value } = e.target;
-    
+
         setFormData((prev) => ({
             ...prev,
-            [name]: name === "phoneNumber" ? (value === "" ? "" : Number(value)) : value,
+            [name]:
+                name === "phoneNumber"
+                    ? value === ""
+                        ? ""
+                        : Number(value)
+                    : value,
         }));
     };
 
@@ -49,11 +57,23 @@ const Contact = () => {
         const service = formData.service.trim() || "Not specified";
         const message = formData.message.trim();
 
-        const res = await Emailhandler(name, email, phoneNumber, service, message);
+        const res = await Emailhandler(
+            name,
+            email,
+            phoneNumber,
+            service,
+            message
+        );
 
         if (res.status === "success") {
             setSuccess("Your message has been sent successfully!");
-            setFormData({ name: "", email: "", phoneNumber: "", service: "", message: "" });
+            setFormData({
+                name: "",
+                email: "",
+                phoneNumber: "",
+                service: "",
+                message: "",
+            });
             setSelectedService("");
         } else {
             setError(res.message || "Something went wrong. Please try again.");
@@ -72,18 +92,35 @@ const Contact = () => {
                     <div className="w-full md:w-1/2 max-md:px-4">
                         <div className="space-y-10 ">
                             {contactDetails.map((contact, index) => (
-                                <div key={index} className="flex items-center gap-4">
-                                    <div>{contact.icon}</div>
-                                    <div>
-                                        <p className="font-medium">{contact.title}</p>
-                                        <p className="text-primary">{contact.detail}</p>
-                                    </div>
+                                <div
+                                    key={index}
+                                    className="flex items-center gap-4"
+                                >
+                                    <a
+                                        href={contact.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-start gap-4 p-4 rounded-lg hover:bg-gray-100 transition"
+                                    >
+                                        <div>{contact.icon}</div>
+                                        <div>
+                                            <p className="font-medium">
+                                                {contact.title}
+                                            </p>
+                                            <p className="text-primary">
+                                                {contact.detail}
+                                            </p>
+                                        </div>
+                                    </a>
                                 </div>
                             ))}
                         </div>
                     </div>
                     <div className="w-full md:w-1/2 max-md:mt-10">
-                        <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
+                        <form
+                            className="flex flex-col space-y-4"
+                            onSubmit={handleSubmit}
+                        >
                             <input
                                 type="text"
                                 name="name"
@@ -131,7 +168,10 @@ const Contact = () => {
                                                 className="p-2 hover:bg-primary hover:text-white cursor-pointer transition"
                                                 onClick={() => {
                                                     setSelectedService(service);
-                                                    setFormData({ ...formData, service });
+                                                    setFormData({
+                                                        ...formData,
+                                                        service,
+                                                    });
                                                     setIsOpen(false);
                                                 }}
                                             >
@@ -160,7 +200,9 @@ const Contact = () => {
                                 {isLoading && <span className="loader"></span>}
                             </button>
 
-                            {success && <p className="text-green-500">{success}</p>}
+                            {success && (
+                                <p className="text-green-500">{success}</p>
+                            )}
                             {error && <p className="text-red-500">{error}</p>}
                         </form>
                     </div>
